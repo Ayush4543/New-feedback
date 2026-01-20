@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MRU Workshop Feedback Form</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body class="bg-gradient-to-r from-blue-100 to-indigo-200 min-h-screen flex items-center justify-center p-6">
+
+<div class="bg-white shadow-2xl rounded-xl p-8 max-w-2xl w-full">
+    <h1 class="text-3xl font-bold text-center text-indigo-700 mb-2">
+        One-Week Hands-on Workshop
+    </h1>
+    <p class="text-center text-gray-600 mb-4">
+        Data Visualization Tools
+    </p>
+
+    <div class="text-sm text-center mb-6">
+        <p>For: BTech & BCA First Year Students</p>
+        <p>5 Jan 2026 – 10 Jan 2026</p>
+        <p>9:30 AM onwards | Venue: LF9</p>
+    </div>
+
+    <form id="feedbackForm" class="space-y-4">
+        <input type="text" id="name" placeholder="Student Name" required class="w-full p-3 border rounded">
+
+        <div class="grid grid-cols-2 gap-4">
+            <input type="text" placeholder="Class" required class="p-3 border rounded">
+            <input type="text" placeholder="Section" required class="p-3 border rounded">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <select required class="p-3 border rounded">
+                <option value="">Select Course</option>
+                <option>BTech</option>
+                <option>BCA</option>
+            </select>
+            <input type="text" placeholder="Department" required class="p-3 border rounded">
+        </div>
+
+        <select required class="w-full p-3 border rounded">
+            <option value="">Select Semester</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+        </select>
+
+        <textarea rows="3" placeholder="Your Feedback" required class="w-full p-3 border rounded"></textarea>
+
+        <button type="submit"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded font-semibold">
+            Submit Feedback & Download Certificate
+        </button>
+    </form>
+</div>
+
+<script>
+document.getElementById("feedbackForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF("landscape", "mm", "a4");
+
+    // Border
+    doc.setLineWidth(2);
+    doc.rect(10, 10, 277, 190);
+
+    // ---------- TEXT CONTENT ----------
+    doc.setFont("times", "bold");
+    doc.setFontSize(28);
+    doc.text("Manav Rachna University", 148, 35, { align: "center" });
+
+    doc.setFontSize(18);
+    doc.text("Certificate of Participation", 148, 50, { align: "center" });
+
+    doc.setFont("times", "normal");
+    doc.setFontSize(14);
+    doc.text("This is to certify that", 148, 70, { align: "center" });
+
+    doc.setFont("times", "bold");
+    doc.setFontSize(22);
+    doc.text(name, 148, 85, { align: "center" });
+
+    doc.setFont("times", "normal");
+    doc.setFontSize(14);
+    doc.text(
+        "has successfully participated in the One-Week Hands-on Workshop",
+        148, 100, { align: "center" }
+    );
+
+    doc.setFont("times", "bold");
+    doc.text("Data Visualization Tools", 148, 112, { align: "center" });
+
+    doc.setFont("times", "normal");
+    doc.text(
+        "held from 5 January 2026 to 10 January 2026 at LF9.",
+        148, 125, { align: "center" }
+    );
+
+    // ---------- IMAGES (SAFE TRY) ----------
+    try {
+        const logo = new Image();
+        logo.src = "mru logo.webp";
+        doc.addImage(logo, "WEBP", 20, 20, 40, 25);
+    } catch (e) {}
+
+    try {
+        const deanSign = new Image();
+        deanSign.src = "WhatsApp_Image_2026-01-20_at_10.25.17_AM-removebg-preview.png";
+        doc.addImage(deanSign, "PNG", 50, 145, 50, 20);
+        doc.line(50, 168, 100, 168);
+        doc.setFont("times", "bold");
+
+    } catch (e) {}
+
+    try {
+    const poojaSign = new Image();
+    poojaSign.src = "Pooja ma'am.png";
+
+    // Signature image (TOP)
+    doc.addImage(poojaSign, "PNG", 190, 145, 50, 20);
+
+    // Name BELOW signature
+    doc.setFont("times", "bold");
+    doc.text("Dr. Pooja", 215, 170, { align: "center" });
+
+    // Designation BELOW name
+    doc.setFont("times", "normal");
+    doc.text("Program Head – BCA", 215, 177, { align: "center" });
+
+    // Line at the BOTTOM
+    doc.line(190, 182, 240, 182);
+
+} catch (e) {}
+
+
+    // ---------- DOWNLOAD ----------
+    doc.save(name + "_MRU_Certificate.pdf");
+
+    alert("Feedback submitted successfully!\nCertificate downloaded.");
+    document.getElementById("feedbackForm").reset();
+});
+</script>
+
+
+</body>
+</html>
